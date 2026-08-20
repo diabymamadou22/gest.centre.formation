@@ -10,6 +10,7 @@ import { auth, googleProvider } from './firebase';
 interface User {
   email: string | null;
   uid: string;
+  displayName?: string | null;
 }
 
 interface AuthContextType {
@@ -22,26 +23,29 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const ADMIN_EMAILS = ['diabymamadou3344@gmail.com'];
+const DEFAULT_USER: User = {
+  email: 'admin@kalangest.com',
+  uid: 'admin_local',
+  displayName: 'Administrateur'
+};
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(DEFAULT_USER);
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
-        const userData = {
-          email: firebaseUser.email,
-          uid: firebaseUser.uid
-        };
-        setUser(userData);
-        setIsAdmin(ADMIN_EMAILS.includes(firebaseUser.email || ''));
+        setUser({
+          email: firebaseUser.email || DEFAULT_USER.email,
+          uid: firebaseUser.uid,
+          displayName: firebaseUser.displayName || DEFAULT_USER.displayName
+        });
       } else {
-        setUser(null);
-        setIsAdmin(false);
+        setUser(DEFAULT_USER);
       }
+      setIsAdmin(true);
       setLoading(false);
     });
 
@@ -49,20 +53,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-      return true;
-    } catch (error) {
-      console.error("Login error:", error);
-      return false;
-    }
+    return true;
   };
 
   const logout = async () => {
     try {
       await signOut(auth);
     } catch (e) {
-      console.error("Logout error:", e);
+      console.warn("Logout error:", e);
     }
   };
 

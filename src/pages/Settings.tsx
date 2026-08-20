@@ -13,24 +13,16 @@ export const Settings: React.FC = () => {
     logoUrl: '',
     accessCode: '00223'
   });
-  const [admins, setAdmins] = useState<{ id: string; email?: string }[]>([]);
-  const [newAdminEmail, setNewAdminEmail] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [settingsData, adminsData] = await Promise.all([
-          apiFetch('/api/settings/general', { showToast: false }),
-          apiFetch('/api/admins', { showToast: false })
-        ]);
-        
+        const settingsData = await apiFetch('/api/settings/general', { showToast: false });
         if (settingsData) {
           setSettings(settingsData);
         }
-
-        setAdmins(adminsData);
       } catch (error) {
         console.error("Error fetching settings:", error);
       } finally {
@@ -49,18 +41,6 @@ export const Settings: React.FC = () => {
       console.error("Error saving settings:", error);
     } finally {
       setSaving(false);
-    }
-  };
-
-  const handleAddAdmin = async () => {
-    if (!newAdminEmail) return;
-    try {
-      // In a real app, you'd need the UID. For this demo, we'll use email as ID or a dummy ID.
-      // Since rules use request.auth.uid, we usually save by UID.
-      // For simplicity here, we'll alert that they need to be invited.
-      alert("La gestion avancée des administrateurs nécessite l'ID utilisateur Firebase.");
-    } catch (error) {
-      console.error("Error adding admin:", error);
     }
   };
 
@@ -233,65 +213,21 @@ export const Settings: React.FC = () => {
       <section className="bg-white rounded-[2rem] border border-[#E5E5E0] shadow-sm overflow-hidden">
         <div className="px-10 py-8 border-b border-[#F0F0EE]">
           <h3 className="font-serif text-2xl font-medium flex items-center gap-3">
-            <Shield size={24} className="text-amber-600" />
-            Sécurité & Administrateurs
+            <Shield size={24} className="text-emerald-700" />
+            Accès & Sécurité du Système
           </h3>
-          <p className="text-sm text-[#8E9299] mt-1">Gérez les accès privilégiés au système.</p>
+          <p className="text-sm text-[#8E9299] mt-1">État de l'accès à l'application.</p>
         </div>
 
         <div className="p-10">
-          <div className="space-y-6 mb-12">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-[#8E9299]">Contrôle d'accès</h4>
-            <div className="max-w-md space-y-4">
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-[#8E9299]">Code Secret (Pin)</label>
-                <div className="relative">
-                  <Shield className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C0C0BA]" size={16} />
-                  <input
-                    type="text"
-                    maxLength={10}
-                    value={settings.accessCode || '00223'}
-                    onChange={(e) => setSettings({ ...settings, accessCode: e.target.value })}
-                    placeholder="00223"
-                    className="w-full pl-12 pr-4 py-3 bg-[#F9F9F7] border border-[#E5E5E0] rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-sm font-mono tracking-widest"
-                  />
-                </div>
-                <p className="text-[10px] text-[#A0A09A] mt-1 ml-2 italic">Ce code sera demandé à chaque connexion au système.</p>
-              </div>
-              <button
-                type="button"
-                disabled={saving}
-                onClick={handleSaveSettings}
-                className="flex items-center gap-2 px-6 py-2.5 bg-amber-600 text-white rounded-xl text-xs font-bold hover:bg-amber-700 transition-all shadow-md active:scale-95 disabled:opacity-50"
-              >
-                {saving ? <Loader2 className="animate-spin" size={14} /> : <Save size={14} />}
-                Mettre à jour le code
-              </button>
+          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+              <h4 className="text-sm font-bold text-emerald-900">Accès Direct & Libre Activé</h4>
             </div>
-          </div>
-
-          <div className="space-y-4 mb-8">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-[#8E9299]">Administrateurs actuels</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 bg-[#F9F9F7] rounded-xl border border-[#E5E5E0] flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs">M</div>
-                  <span className="text-sm font-medium">diabymamadou3344@gmail.com</span>
-                </div>
-                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase tracking-tighter">Propriétaire</span>
-              </div>
-              {admins.filter(a => a.id !== 'bootstrap').map(admin => (
-                <div key={admin.id} className="p-4 bg-white rounded-xl border border-[#E5E5E0] flex items-center justify-between shadow-sm">
-                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xs">A</div>
-                    <span className="text-sm font-medium text-slate-700">{admin.email || admin.id}</span>
-                  </div>
-                  <button className="p-2 text-red-100 hover:text-red-600 transition-colors">
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ))}
-            </div>
+            <p className="text-xs text-emerald-800 leading-relaxed">
+              L'authentification Google et les demandes de mot de passe/code PIN ont été désactivées. Toute personne ouvrant l'application accède immédiatement et directement au tableau de bord et à l'ensemble des modules de gestion.
+            </p>
           </div>
         </div>
       </section>

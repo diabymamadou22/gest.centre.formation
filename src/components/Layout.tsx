@@ -172,22 +172,15 @@ export const Layout: React.FC = () => {
                Installer l'App
              </button>
            )}
-           <div className="flex items-center gap-3 p-3 mb-3 bg-[#F9F9F7] rounded-2xl border border-[#E5E5E0]">
+           <div className="flex items-center gap-3 p-3 bg-[#F9F9F7] rounded-2xl border border-[#E5E5E0]">
             <div className="w-8 h-8 rounded-xl bg-emerald-900 text-white flex items-center justify-center text-[10px] font-bold shadow-sm shrink-0">
-              {user?.email?.charAt(0).toUpperCase()}
+              A
             </div>
             <div className="overflow-hidden">
-              <p className="text-[10px] font-bold truncate leading-none mb-0.5">{user?.displayName || 'Administrateur'}</p>
-              <p className="text-[8px] text-[#8E9299] truncate font-medium">Session Active</p>
+              <p className="text-[10px] font-bold truncate leading-none mb-0.5">Espace Administrateur</p>
+              <p className="text-[8px] text-emerald-700 truncate font-semibold">Accès Libre & Direct</p>
             </div>
           </div>
-          <button 
-            onClick={logout}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[#FF4444] hover:bg-red-50 transition-all duration-300 text-[10px] font-bold uppercase tracking-widest border border-transparent hover:border-red-100"
-          >
-            <LogOut size={16} />
-            Quitter
-          </button>
         </div>
       </aside>
 
@@ -254,10 +247,6 @@ export const Layout: React.FC = () => {
             <div className="hidden xl:flex flex-col items-end ml-2">
               <span className="text-xs font-medium text-[#1A1A1A] capitalize">{new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'short' })}</span>
             </div>
-
-            <button onClick={logout} className="lg:hidden p-2 border border-[#E5E5E0] bg-white rounded-lg text-[#FF4444] hover:bg-red-50 transition-all shadow-sm">
-                <LogOut size={18} />
-            </button>
           </div>
         </header>
 

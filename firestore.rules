@@ -1,151 +1,54 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Default deny
-    match /{document=**} {
-      allow read, write: if false;
-    }
-
-    // Helper functions
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
-    function isEmailVerified() {
-      return request.auth.token.email_verified == true;
-    }
-
-    function isAdmin() {
-      return isSignedIn() && isEmailVerified() && (
-        request.auth.token.email == 'diabymamadou3344@gmail.com'
-      );
-    }
-
-    function isValidId(id) {
-      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
-    }
-
-    function incoming() {
-      return request.resource.data;
-    }
-
-    function existing() {
-      return resource.data;
-    }
-
     // Students collection
     match /students/{studentId} {
-      allow read: if isSignedIn();
-      allow create: if isAdmin() && isValidStudent(incoming());
-      allow update: if isAdmin() && isValidStudent(incoming());
-      allow delete: if isAdmin();
-
-      function isValidStudent(data) {
-        return data.firstName is string && data.firstName.size() <= 100 &&
-               data.lastName is string && data.lastName.size() <= 100 &&
-               (data.get('email', '') == '' || (data.email is string && data.email.size() <= 255));
-      }
+      allow read, write: if true;
     }
 
     // Courses collection
     match /courses/{courseId} {
-      allow read: if isSignedIn();
-      allow create: if isAdmin() && isValidCourse(incoming());
-      allow update: if isAdmin() && isValidCourse(incoming());
-      allow delete: if isAdmin();
-
-      function isValidCourse(data) {
-        return data.name is string && data.name.size() <= 200 &&
-               data.price is number && data.price >= 0;
-      }
+      allow read, write: if true;
     }
 
     // Enrollments collection
     match /enrollments/{enrollmentId} {
-      allow read: if isSignedIn();
-      allow create: if isAdmin() && isValidEnrollment(incoming());
-      allow update: if isAdmin() && isValidEnrollment(incoming());
-      allow delete: if isAdmin();
-
-      function isValidEnrollment(data) {
-        return isValidId(data.studentId) && isValidId(data.courseId);
-      }
+      allow read, write: if true;
     }
 
     // Payments collection
     match /payments/{paymentId} {
-      allow read: if isSignedIn();
-      allow create: if isAdmin() && isValidPayment(incoming());
-      allow update: if isAdmin() && isValidPayment(incoming());
-      allow delete: if isAdmin();
-
-      function isValidPayment(data) {
-        return isValidId(data.studentId) && data.amount is number && data.amount >= 0;
-      }
+      allow read, write: if true;
     }
 
     // Teachers collection
     match /teachers/{teacherId} {
-      allow read: if isSignedIn();
-      allow create: if isAdmin() && isValidTeacher(incoming());
-      allow update: if isAdmin() && isValidTeacher(incoming());
-      allow delete: if isAdmin();
-
-      function isValidTeacher(data) {
-        return data.firstName is string && data.firstName.size() <= 100 &&
-               data.lastName is string && data.lastName.size() <= 100;
-      }
+      allow read, write: if true;
     }
 
     // Attendances collection
     match /attendances/{attendanceId} {
-      allow read: if isSignedIn();
-      allow create: if isAdmin() && isValidAttendance(incoming());
-      allow update: if isAdmin() && isValidAttendance(incoming());
-      allow delete: if isAdmin();
-
-      function isValidAttendance(data) {
-        return isValidId(data.studentId) && isValidId(data.courseId) &&
-               data.date is string && data.status is string;
-      }
+      allow read, write: if true;
     }
 
     // Grades collection
     match /grades/{gradeId} {
-      allow read: if isSignedIn();
-      allow create: if isAdmin() && isValidGrade(incoming());
-      allow update: if isAdmin() && isValidGrade(incoming());
-      allow delete: if isAdmin();
-
-      function isValidGrade(data) {
-        return isValidId(data.studentId) && isValidId(data.courseId) &&
-               data.title is string && data.grade is number;
-      }
+      allow read, write: if true;
     }
 
     // Resources collection
     match /resources/{resourceId} {
-      allow read: if isSignedIn();
-      allow create: if isAdmin() && isValidResource(incoming());
-      allow update: if isAdmin() && isValidResource(incoming());
-      allow delete: if isAdmin();
-
-      function isValidResource(data) {
-        return data.title is string && data.title.size() <= 200 &&
-               data.type is string;
-      }
+      allow read, write: if true;
     }
 
     // Bulletin Appreciations collection
     match /bulletin_appreciations/{appreciationId} {
-      allow read: if isSignedIn();
-      allow create, update, delete: if isAdmin();
+      allow read, write: if true;
     }
 
     // Settings collection
     match /settings/{settingId} {
-      allow read: if isSignedIn();
-      allow write: if isAdmin();
+      allow read, write: if true;
     }
   }
 }
