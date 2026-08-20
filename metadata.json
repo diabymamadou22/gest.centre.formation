@@ -1,0 +1,6 @@
+{
+  "name": "kalan gest KG",
+  "description": "Système complet de gestion pour centres de formation coranique : suivi des élèves, formateurs, cours, notes & bulletins, et paiements.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

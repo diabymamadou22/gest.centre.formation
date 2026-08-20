@@ -1,0 +1,112 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email == 'diabymamadou3344@gmail.com'
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- Validation Helpers ---
+
+    function isValidStudent(data) {
+      return data.keys().hasAll(['firstName', 'lastName', 'status'])
+        && data.firstName is string && data.firstName.size() > 0 && data.firstName.size() <= 100
+        && data.lastName is string && data.lastName.size() > 0 && data.lastName.size() <= 100
+        && data.status in ['active', 'inactive']
+        && (data.get('phoneNumber', '') == '' || (data.phoneNumber is string && data.phoneNumber.size() <= 20))
+        && (data.get('email', '') == '' || (data.email is string && data.email.size() <= 100));
+    }
+
+    function isValidCourse(data) {
+      return data.keys().hasAll(['name', 'price'])
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 200
+        && data.price is number && data.price >= 0
+        && (data.get('teacher', '') == '' || (data.teacher is string && data.teacher.size() <= 100));
+    }
+
+    function isValidPayment(data) {
+      return data.keys().hasAll(['studentId', 'amount', 'paymentDate'])
+        && data.studentId is string && isValidId(data.studentId)
+        && data.amount is number && data.amount > 0
+        && data.paymentDate is string // Format validation usually limited in rules
+        && (data.get('paymentMethod', 'cash') in ['cash', 'transfer', 'check']);
+    }
+
+    function isValidEnrollment(data) {
+      return data.keys().hasAll(['studentId', 'courseId', 'status'])
+        && data.studentId is string && isValidId(data.studentId)
+        && data.courseId is string && isValidId(data.courseId)
+        && data.status in ['active', 'completed', 'dropped'];
+    }
+
+    // --- Rules ---
+
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin(); // Only admins can manage other admins
+    }
+
+    match /students/{studentId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() && isValidId(studentId) && isValidStudent(incoming());
+      allow update: if isAdmin() && isValidStudent(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['firstName', 'lastName', 'status', 'phoneNumber', 'email', 'updatedAt'])
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /courses/{courseId} {
+      allow read: if isSignedIn(); // Teachers/staff might need to see courses
+      allow create: if isAdmin() && isValidId(courseId) && isValidCourse(incoming());
+      allow update: if isAdmin() && isValidCourse(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['name', 'description', 'teacher', 'schedule', 'price', 'updatedAt'])
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /payments/{paymentId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() && isValidId(paymentId) && isValidPayment(incoming())
+        && exists(/databases/$(database)/documents/students/$(incoming().studentId));
+      allow update: if isAdmin() && isValidPayment(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['amount', 'paymentDate', 'paymentMethod', 'description', 'updatedAt'])
+      );
+      allow delete: if isAdmin();
+    }
+
+    match /enrollments/{enrollmentId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() && isValidId(enrollmentId) && isValidEnrollment(incoming())
+        && exists(/databases/$(database)/documents/students/$(incoming().studentId))
+        && exists(/databases/$(database)/documents/courses/$(incoming().courseId));
+      allow update: if isAdmin() && isValidEnrollment(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt'])
+      );
+      allow delete: if isAdmin();
+    }
+  }
+}

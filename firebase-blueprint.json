@@ -1,0 +1,202 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "An individual registered in the training center.",
+      "type": "object",
+      "properties": {
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "dateOfBirth": { "type": "string" },
+        "registrationDate": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "email": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["firstName", "lastName"]
+    },
+    "Course": {
+      "title": "Course",
+      "description": "A subject or training session offered by the center.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "teacher": { "type": "string" },
+        "schedule": { "type": "string" },
+        "price": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "price"]
+    },
+    "Enrollment": {
+      "title": "Enrollment",
+      "description": "A student's registration for a specific course.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "courseId": { "type": "string" },
+        "startDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "completed", "dropped"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "courseId"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Financial transaction made by a student for a course.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "courseId": { "type": "string" },
+        "amount": { "type": "number" },
+        "paymentDate": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "amount"]
+    },
+    "Teacher": {
+      "title": "Teacher",
+      "description": "Instructor or teacher details.",
+      "type": "object",
+      "properties": {
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "email": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "specialty": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "bio": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["firstName", "lastName"]
+    },
+    "Attendance": {
+      "title": "Attendance",
+      "description": "Attendance record for a student in a course on a date.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "courseId": { "type": "string" },
+        "date": { "type": "string" },
+        "status": { "type": "string", "enum": ["present", "absent", "late", "excused"] },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "courseId", "date", "status"]
+    },
+    "Grade": {
+      "title": "Grade",
+      "description": "Assessment or exam grade for a student in a course.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "courseId": { "type": "string" },
+        "title": { "type": "string" },
+        "grade": { "type": "number" },
+        "maxGrade": { "type": "number" },
+        "coefficient": { "type": "number" },
+        "date": { "type": "string" },
+        "comments": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "courseId", "title", "grade"]
+    },
+    "Resource": {
+      "title": "Resource",
+      "description": "Course materials or center equipment loaned or shared.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["document", "link", "equipment", "book"] },
+        "courseId": { "type": "string" },
+        "assignedStudentId": { "type": "string" },
+        "url": { "type": "string" },
+        "status": { "type": "string", "enum": ["available", "loaned", "archived"] },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "type"]
+    },
+    "BulletinAppreciation": {
+      "title": "BulletinAppreciation",
+      "description": "General report card appreciation for a student and period.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "period": { "type": "string" },
+        "generalAppreciation": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "period"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "Global configuration for the center.",
+      "type": "object",
+      "properties": {
+        "centerName": { "type": "string" },
+        "address": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "email": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "accessCode": { "type": "string" }
+      },
+      "required": ["centerName", "accessCode"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "All students registered in the center."
+    },
+    "/courses/{courseId}": {
+      "schema": "Course",
+      "description": "Available course offerings."
+    },
+    "/enrollments/{enrollmentId}": {
+      "schema": "Enrollment",
+      "description": "Student course enrollment history."
+    },
+    "/payments/{paymentId}": {
+      "schema": "Payment",
+      "description": "All financial transactions recorded."
+    },
+    "/teachers/{teacherId}": {
+      "schema": "Teacher",
+      "description": "All instructors registered in the center."
+    },
+    "/attendances/{attendanceId}": {
+      "schema": "Attendance",
+      "description": "Attendance history per student and course."
+    },
+    "/grades/{gradeId}": {
+      "schema": "Grade",
+      "description": "Grade records and evaluations."
+    },
+    "/resources/{resourceId}": {
+      "schema": "Resource",
+      "description": "Course learning materials and equipment loans."
+    },
+    "/bulletin_appreciations/{appreciationId}": {
+      "schema": "BulletinAppreciation",
+      "description": "General report card appreciations per student and period."
+    },
+    "/settings/{settingId}": {
+      "schema": "Settings",
+      "description": "Global settings (usually document 'general')."
+    }
+  }
+}
