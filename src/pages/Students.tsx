@@ -438,39 +438,43 @@ export const Students: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-8 py-5 text-right">
-                      <div className="flex items-center justify-end gap-6">
-                        <div className="text-right">
+                      <div className="flex items-center justify-end gap-4">
+                        <div className="text-right shrink-0">
                           <p className={`text-xs font-bold ${getStudentBalance(s.id) > 0 ? 'text-red-600' : 'text-emerald-600'}`}>
                             {getStudentBalance(s.id) > 0 ? `${getStudentBalance(s.id).toLocaleString()} FCFA` : 'Réglé'}
                           </p>
                           <button 
                             onClick={() => setExpandedStudent(expandedStudent === s.id ? null : s.id)}
-                            className="text-[10px] text-[#8E9299] hover:text-emerald-600 font-bold uppercase tracking-tighter transition-colors"
+                            className="inline-flex items-center gap-1 text-[10px] text-slate-600 hover:text-emerald-700 font-bold uppercase tracking-wider transition-colors mt-0.5"
                           >
-                            Détails
+                            <span>Détails</span>
+                            <span className="text-[9px]">{expandedStudent === s.id ? '▲' : '▼'}</span>
                           </button>
                         </div>
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center gap-2 shrink-0">
                           <button 
                             onClick={() => handleOpenCardModal(s)}
-                            className="p-2 text-emerald-800 hover:text-emerald-950 hover:bg-emerald-100 rounded-lg transition-colors"
-                            title="Afficheur / Télécharger la Carte Scolaire"
+                            className="flex items-center gap-1.5 px-3 py-2 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 border border-emerald-300 rounded-xl text-xs font-bold shadow-xs transition-all active:scale-95"
+                            title="Afficher / Télécharger la Carte Scolaire"
                           >
-                            <IdCard size={18} />
+                            <IdCard size={15} className="text-emerald-700 shrink-0" />
+                            <span>Carte</span>
                           </button>
                           <button 
                             onClick={() => handleEdit(s)}
-                            className="p-2 text-[#8E9299] hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                            className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300 rounded-xl text-xs font-bold shadow-xs transition-all active:scale-95"
                             title="Modifier les informations"
                           >
-                            <Edit size={16} />
+                            <Edit size={14} className="text-slate-700 shrink-0" />
+                            <span>Modifier</span>
                           </button>
                           <button 
                             onClick={() => handleDelete(s)}
-                            className="p-2 text-[#8E9299] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            className="flex items-center gap-1.5 px-3 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-300 rounded-xl text-xs font-bold shadow-xs transition-all active:scale-95"
                             title="Supprimer l'élève"
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={14} className="text-rose-600 shrink-0" />
+                            <span>Supprimer</span>
                           </button>
                         </div>
                       </div>

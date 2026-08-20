@@ -144,11 +144,21 @@ export const Courses: React.FC = () => {
                 <BookOpen size={28} />
               </div>
               <div className="flex gap-2">
-                <button onClick={() => handleEdit(course)} className="p-2 text-[#8E9299] hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-colors">
-                  <Edit size={16} />
+                <button 
+                  onClick={() => handleEdit(course)} 
+                  className="px-3 py-2 bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300 rounded-xl transition-all flex items-center gap-1.5 text-xs font-bold shadow-xs active:scale-95"
+                  title="Modifier la formation"
+                >
+                  <Edit size={14} className="text-slate-700 shrink-0" />
+                  <span>Modifier</span>
                 </button>
-                <button onClick={() => handleDelete(course)} className="p-2 text-[#8E9299] hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors">
-                  <Trash2 size={16} />
+                <button 
+                  onClick={() => handleDelete(course)} 
+                  className="px-3 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-300 rounded-xl transition-all flex items-center gap-1.5 text-xs font-bold shadow-xs active:scale-95"
+                  title="Supprimer la formation"
+                >
+                  <Trash2 size={14} className="text-rose-600 shrink-0" />
+                  <span>Supprimer</span>
                 </button>
               </div>
             </div>

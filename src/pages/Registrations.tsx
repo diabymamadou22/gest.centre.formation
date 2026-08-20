@@ -335,9 +335,11 @@ export const Registrations: React.FC = () => {
                   <td className="px-8 py-5 text-right">
                     <button
                       onClick={() => handleDelete(reg)}
-                      className="p-2 text-[#8E9299] hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-300 rounded-xl text-xs font-bold shadow-xs transition-all active:scale-95"
+                      title="Supprimer l'inscription"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={14} className="text-rose-600 shrink-0" />
+                      <span>Supprimer</span>
                     </button>
                   </td>
                 </tr>

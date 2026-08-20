@@ -1317,32 +1317,33 @@ export const Payments: React.FC = () => {
 
                         {/* Actions */}
                         <td className="px-6 py-4 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
+                          <div className="flex items-center justify-end gap-2 shrink-0">
                             <button 
                               onClick={() => sendWhatsAppReceipt(p)}
-                              className="px-2.5 py-1.5 bg-[#25D366]/10 text-[#1e9f4c] hover:bg-[#25D366]/20 rounded-xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#25D366]/30 shadow-xs"
+                              className="px-3 py-2 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 rounded-xl transition-all flex items-center gap-1.5 text-xs font-bold border border-emerald-300 shadow-xs active:scale-95"
                               title="Envoyer le reçu directement au parent sur WhatsApp"
                             >
-                              <Send size={13} />
-                              WhatsApp
+                              <Send size={13} className="text-emerald-700" />
+                              <span>WhatsApp</span>
                             </button>
                             <button 
                               onClick={() => {
                                 setPreviewPayment(p);
                                 setIsInvoicePreviewOpen(true);
                               }}
-                              className="px-3 py-1.5 text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors flex items-center gap-1.5 text-xs font-bold border border-emerald-200/60 shadow-sm"
+                              className="px-3 py-2 bg-slate-100 text-slate-800 hover:bg-slate-200 rounded-xl transition-all flex items-center gap-1.5 text-xs font-bold border border-slate-300 shadow-xs active:scale-95"
                               title="Aperçu & Imprimer le Reçu"
                             >
-                              <ReceiptText size={14} />
-                              Reçu
+                              <ReceiptText size={14} className="text-slate-700" />
+                              <span>Reçu</span>
                             </button>
                             <button 
                               onClick={() => handleDelete(p)}
-                              className="p-2 text-[#8E9299] hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                              className="px-3 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-xl transition-all flex items-center gap-1.5 text-xs font-bold border border-rose-300 shadow-xs active:scale-95"
                               title="Supprimer ce versement"
                             >
-                              <Trash2 size={16} />
+                              <Trash2 size={14} className="text-rose-600" />
+                              <span>Supprimer</span>
                             </button>
                           </div>
                         </td>

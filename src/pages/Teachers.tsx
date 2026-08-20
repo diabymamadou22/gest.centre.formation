@@ -334,26 +334,28 @@ export const Teachers: React.FC = () => {
                 <div className="flex items-center justify-between gap-2 pt-3 border-t border-[#F0F0EE]">
                   <button
                     onClick={() => handleOpenCard(t)}
-                    className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors border border-amber-200"
+                    className="px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-900 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border border-amber-300 shadow-xs active:scale-95"
                     title="Afficher la carte professionnelle"
                   >
-                    <IdCard size={14} /> Carte Pro
+                    <IdCard size={14} className="text-amber-800 shrink-0" /> 
+                    <span>Carte Pro</span>
                   </button>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => handleOpenModal(t)}
-                      className="px-3 py-1.5 bg-[#F9F9F7] hover:bg-[#F0F0EE] text-[#1A1A1A] rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors"
+                      className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border border-slate-300 shadow-xs active:scale-95"
                       title="Modifier les détails"
                     >
-                      <Edit2 size={14} /> Modifier
+                      <Edit2 size={14} className="text-slate-700 shrink-0" /> 
+                      <span>Modifier</span>
                     </button>
                     <button
                       onClick={() => handleDelete(t.id)}
-                      className="p-1.5 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+                      className="px-2.5 py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-xl transition-all border border-rose-300 shadow-xs active:scale-95"
                       title="Supprimer l'enseignant"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={14} className="text-rose-600 shrink-0" />
                     </button>
                   </div>
                 </div>
