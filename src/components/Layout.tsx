@@ -20,9 +20,11 @@ import {
   HelpCircle,
   Wifi,
   WifiOff,
-  CloudOff
+  CloudOff,
+  Lock
 } from 'lucide-react';
 import { useAuth } from '../lib/auth';
+import { useStorageLock } from './StorageLockGate';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
 import { apiFetch } from '../lib/api';
@@ -31,6 +33,7 @@ import { UserGuideModal } from './UserGuideModal';
 
 export const Layout: React.FC = () => {
   const { user, logout } = useAuth();
+  const { lockApp } = useStorageLock();
   const location = useLocation();
   const [centerName, setCenterName] = React.useState('kalan gest KG');
   const [logoUrl, setLogoUrl] = React.useState('');
@@ -178,9 +181,17 @@ export const Layout: React.FC = () => {
             </div>
             <div className="overflow-hidden">
               <p className="text-[10px] font-bold truncate leading-none mb-0.5">Espace Administrateur</p>
-              <p className="text-[8px] text-emerald-700 truncate font-semibold">Accès Libre & Direct</p>
+              <p className="text-[8px] text-emerald-700 truncate font-semibold">Accès Sécurisé</p>
             </div>
           </div>
+          <button
+            onClick={lockApp}
+            className="w-full mt-2.5 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-200 hover:border-rose-200 transition-all text-xs font-bold active:scale-95 cursor-pointer"
+            title="Verrouiller l'accès à l'application"
+          >
+            <Lock size={14} />
+            <span>Verrouiller</span>
+          </button>
         </div>
       </aside>
 
@@ -242,6 +253,16 @@ export const Layout: React.FC = () => {
             >
               <HelpCircle size={15} />
               <span className="hidden md:inline-block">Guide & Aide</span>
+            </button>
+
+            {/* Lock Button */}
+            <button
+              onClick={lockApp}
+              className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 text-slate-700 border border-slate-200 rounded-xl hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200 transition-all text-xs font-bold shadow-xs active:scale-95 cursor-pointer"
+              title="Verrouiller l'accès"
+            >
+              <Lock size={14} />
+              <span className="hidden sm:inline-block">Verrouiller</span>
             </button>
 
             <div className="hidden xl:flex flex-col items-end ml-2">
